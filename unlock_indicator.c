@@ -143,7 +143,8 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
                   2 * M_PI /* end */);
 
         /* Use the appropriate color for the different PAM states
-         * (currently verifying, wrong password, or default) */
+         * (currently verifying, wrong password, or default).
+         * Also draw wrong password background (red) if Caps Lock is on. */
         switch (pam_state) {
             case STATE_PAM_VERIFY:
                 cairo_set_source_rgba(ctx, 0, 114.0/255, 255.0/255, 0.75);
@@ -152,9 +153,14 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
                 cairo_set_source_rgba(ctx, 250.0/255, 0, 0, 0.75);
                 break;
             default:
+                if (caps == 1) { 
+                    cairo_set_source_rgba(ctx, 250.0/255, 0, 0, 0.75);
+                    break;
+                }
                 cairo_set_source_rgba(ctx, 0, 0, 0, 0.75);
                 break;
         }
+
         cairo_fill_preserve(ctx);
 
         switch (pam_state) {
@@ -195,6 +201,9 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
             default:
                 break;
         }
+        
+        if (caps == 1) 
+            text = "caps active!";
 
         if (text) {
             cairo_text_extents_t extents;

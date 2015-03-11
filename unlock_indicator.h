@@ -16,6 +16,9 @@ typedef enum {
     STATE_PAM_WRONG = 2         /* the password was wrong */
 } pam_state_t;
 
+bool caps; /* Contains state of Caps Lock key as to draw it on unlock
+			* indicator. */
+
 xcb_pixmap_t draw_image(uint32_t* resolution);
 void redraw_screen(void);
 void clear_indicator(void);
