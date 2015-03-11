@@ -160,7 +160,6 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
                 cairo_set_source_rgba(ctx, 0, 0, 0, 0.75);
                 break;
         }
-
         cairo_fill_preserve(ctx);
 
         switch (pam_state) {
@@ -191,6 +190,9 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
 
         /* Display a (centered) text of the current PAM state. */
         char *text = NULL;
+        if (caps == 1) 
+            text = "caps active!";
+
         switch (pam_state) {
             case STATE_PAM_VERIFY:
                 text = "verifying…";
@@ -202,8 +204,7 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
                 break;
         }
         
-        if (caps == 1) 
-            text = "caps active!";
+    
 
         if (text) {
             cairo_text_extents_t extents;
